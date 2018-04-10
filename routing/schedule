@@ -1,2 +1,2 @@
-30, 7 * * 2-6 /bin/bash /mano/routing/notice_daily.sh >> "/logs/notice.`date +\%Y-\%m`" 2>&1
-0, 0 * * 7 /bin/bash /mano/routing/notice_daily.sh >> "/logs/notice.`date +\%Y-\%m`" 2>&1
+30 7 * * 2-6 /bin/bash /mano/routing/notice_daily.sh >> "/logs/notice.`date +\%Y-\%m`" 2>&1
+0 0 * * 7 /bin/bash /mano/routing/notice_daily.sh >> "/logs/notice.`date +\%Y-\%m`" 2>&1
