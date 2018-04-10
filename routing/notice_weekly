@@ -1,0 +1,4 @@
+#! /bin/bash
+
+source /etc/profile
+mano notice range -s `date -d "7 day ago" +\%Y-\%m-\%d` -e `date +\%Y-\%m-\%d`

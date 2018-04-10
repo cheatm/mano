@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mano:
+    container_name: mano
+    build: .
+    image: mano
+    volumes:
+      - "./conf:/conf"
+      - ".:/logs"
+    environment:
+      MONGODB_URI: "localhost:27017"
+      DB_NAME: ""
+      SERVER_HOST: "smtp.exmail.qq.com:465"
+      USER: ""
+      PASSWORD: ""
+      DEFAULT_SUBJECT: ""
+      CONF_DIF: "/conf"
