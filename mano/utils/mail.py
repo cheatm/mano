@@ -46,5 +46,6 @@ def send(smtp, subject, _to, attachments=None, _from=None, content=""):
             _from = smtp.user
         message = make_msg(_from, _to, subject, attachments, content=content)
         smtp.send_message(message)
+        return message
     else:
         raise TypeError("Type of smtp should be smtplib.SMTP")

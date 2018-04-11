@@ -1,6 +1,14 @@
 from mano import conf
+import sys
 
 
-print("#! /bin/bash")
+lines = ["#! /bin/bash"]
 for name, value in conf.DICT.items():
-    print("export {}={}".format(name, value))
+    if len(value):
+        lines.append("export {}={}".format(name, value))
+
+
+path = sys.argv[1]
+with open(path, "w") as fp:
+    fp.write("\n".join(lines))
+

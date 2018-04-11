@@ -14,4 +14,4 @@ services:
       USER: ""
       PASSWORD: ""
       DEFAULT_SUBJECT: ""
-      CONF_DIF: "/conf"
+      CONF_DIR: "/conf"

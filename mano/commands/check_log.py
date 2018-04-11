@@ -82,7 +82,7 @@ def send_daily(to=conf.RECEIVERS, tables=tuple(FORMATS.keys()), date=None):
     results = dict(iter_daily(db, tables, datetime.strptime(date, "%Y-%m-%d")))
     att = make_excel_attachment(name="daily_{}.xlsx".format(date), **results)
     smtp = mail.login_ssl(conf.HOST, conf.USER, conf.PASSWORD)
-    mail.send(smtp, "DataService daily check {}".format(date), to, attachments=[att])
+    return mail.send(smtp, "DataService daily check {}".format(date), to, attachments=[att])
 
 
 def send_range(to=conf.RECEIVERS, tables=tuple(FORMATS.keys()), start=None, end=None):
@@ -170,11 +170,3 @@ def send_test():
     conf.USER = "cam@fxdayu.com"
     conf.PASSWORD = "Xinger520"
     conf.RECEIVERS = (conf.USER,)
-
-    # r = read_range("factor", get_db(), start=datetime(2018, 4, 1))
-    # send_daily(conf.RECEIVERS, date="2018-04-09")
-    send_range(to=conf.RECEIVERS, start="2018-04-04")
-
-
-if __name__ == '__main__':
-    send_test()

@@ -7,14 +7,14 @@ PASSWORD = os.environ.get("PASSWORD", "")
 SUBJECT = os.environ.get("DEFAULT_SUBJECT", "")
 URI = os.environ.get("MONGODB_URI", "localhost:27017")
 DB = os.environ.get("DB_NAME", "log")
-DIR = os.environ.get("CONF_DIF", "/conf")
+DIR = os.environ.get("CONF_DIR", "/conf")
 
 
 def get_receivers():
     path = os.path.join(DIR, "receivers")
     if os.path.exists(path):
         with open(os.path.join(DIR, "receivers")) as f:
-            return tuple(f.readlines())
+            return tuple(filter(lambda s: len(s), f.read().split("\n")))
     else:
         return ()
 
@@ -29,5 +29,5 @@ DICT = {
     "DEFAULT_SUBJECT": SUBJECT,
     "MONGODB_URI": URI,
     "DB_NAME": DB,
-    "CONF_DIF": DIR
+    "CONF_DIR": DIR
 }
