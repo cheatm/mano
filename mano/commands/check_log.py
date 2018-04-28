@@ -18,16 +18,22 @@ class ColReader(object):
         self.index = index
 
     def daily(self, db, date):
-        dct = {self.date_key: date.strftime(self.date_format)}
+        dct = {self.date_key: self._get_date(date)}
         result = find_match(db[self.name], **dct)
         return self.decorate(result)
+
+    def _get_date(self, date):
+        if isinstance(self.date_format, str):
+            return date.strftime(self.date_format)
+        else:
+            return date
 
     def range(self, db, start=None, end=None):
         ranges = {}
         if start:
-            ranges["$gte"] = start.strftime(self.date_format)
+            ranges["$gte"] = self._get_date(start)
         if end:
-            ranges["$lte"] = end.strftime(self.date_format)
+            ranges["$lte"] = self._get_date(end)
         filters = {self.date_key: ranges} if len(ranges) else None
         result = read(db[self.name], filters, {"_id": 0})
 
@@ -39,11 +45,13 @@ class ColReader(object):
         else:
             return result
 
+
 FORMATS = {
     "dailyIndicator": ColReader("dailyIndicator", "trade_date", "%Y%m%d", "trade_date"),
     "lb_daily": ColReader("lb_daily", "trade_date", "%Y%m%d", "trade_date"),
     "factor": ColReader("factor", "date", "%Y-%m-%d", "date"),
-    "sinta": ColReader("sinta", "date", "%Y-%m-%d", ["date", "symbol"])
+    "sinta": ColReader("sinta", "date", "%Y-%m-%d", ["date", "symbol"]),
+    "future": ColReader("future_mi", "date", None, "date")
 }
 
 
@@ -147,7 +155,6 @@ TO = click.argument("to", nargs=-1)
 @TO
 @NAMES
 @kw_default(lambda v: len(v) == 0, to=conf.RECEIVERS, name=tuple(FORMATS.keys()))
-
 def command_daily(to, name, date):
     send_daily(to, name, date)
 
@@ -163,7 +170,8 @@ def command_range(to, name, start, end):
 
 
 notice = click.Group("notice", {'range': command_range,
-                               "daily": command_daily})
+                                "daily": command_daily})
+
 
 def send_test():
     conf.URI = "192.168.0.102"
