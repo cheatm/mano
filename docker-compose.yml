@@ -4,7 +4,7 @@ services:
     container_name: mano
     build: .
     image: mano
-    command: python mano/worker.py
+    command: bash run_works.sh
     volumes:
       - ./conf/works.yml:/mano/conf/works.yml
       - ./works:/mano/works
