@@ -7,6 +7,6 @@ RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt 
 
 ADD . /mano
 WORKDIR /mano
-ENV LC_ALL="C.UTF-8" LANG="C.UTF-8" PYTHONPATH=/mano
+ENV LC_ALL="C.UTF-8" LANG="C.UTF-8" PYTHONPATH=/mano    
 
 
