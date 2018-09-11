@@ -1,0 +1,10 @@
+version: '3'
+services:
+  mano:
+    container_name: mano
+    build: .
+    image: mano
+    command: python mano/worker.py
+    volumes:
+      - ./conf/works.yml:/mano/conf/works.yml
+      - ./works:/mano/works

@@ -1,8 +1,11 @@
 import smtplib
 from email.message import EmailMessage
 from email.mime.nonmultipart import MIMENonMultipart
+from email.mime.application import MIMEApplication
 import mimetypes
 from mano.utils.tools import logger
+from io import BytesIO
+import pandas as pd
 
 
 def make_msg(_from, _to, subject, attachments=None, content=""):
@@ -32,6 +35,23 @@ def get_type(filename):
     return mtype.split('/', 1)
 
 
+def make_excel_attachment(name="temp.xlsx", data=None, **kwargs):
+    bio = BytesIO()
+    writer = pd.ExcelWriter(name)
+    writer.book.filename = bio
+    if isinstance(data, pd.DataFrame):
+        data.to_excel(writer)
+    for key, value in kwargs.items():
+        value.to_excel(writer, sheet_name=key)
+    writer.save()
+    main, sub = get_type(name)
+    mime = MIMEApplication(bio.getvalue(), sub)
+    mime["Content-Disposition"] = "attachment; filename={}".format(name)
+    bio.close()
+    writer.close()
+    return mime
+
+
 @logger("login", 0, 1, success="success")
 def login_ssl(host, user, password):
     smtp = smtplib.SMTP_SSL(host)
@@ -49,3 +69,11 @@ def send(smtp, subject, _to, attachments=None, _from=None, content=""):
         return message
     else:
         raise TypeError("Type of smtp should be smtplib.SMTP")
+
+
+def main():
+    message = make_msg("cam@fxdayu.com", "cam@fxdayu.com", "test", content="this is a test")
+    print(message)
+
+if __name__ == '__main__':
+    main()
