@@ -95,4 +95,4 @@ if __name__ == '__main__':
     except:
         filename = "conf/works.yml"
     
-    run(sys.argv[1])
+    run(filename)
