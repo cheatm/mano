@@ -35,4 +35,4 @@ def make_attachments():
         return
     table["gap"] = (table["end"] - table["start"]).apply(str)
     globals()["__RESULT"] = table
-    return [make_excel_attachment("backuplog.xlsx", table.set_index(["name", "start", "end"]))]
+    return [make_excel_attachment("backuplog.xlsx", table[["name", "start", "end", "gap", "fill"]])]
