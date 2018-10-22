@@ -33,6 +33,8 @@ def make_attachments():
     table = read(collection, end=(__START, None))
     if not len(table):
         return
-    table["gap"] = (table["end"] - table["start"]).apply(str)
+    table["gap"] = (table["end"] - table["start"])
+    table.sort_values("gap", ascending=False, inplace=True)
+    table["gap"] = table["gap"].apply(str)
     globals()["__RESULT"] = table
     return [make_excel_attachment("backuplog.xlsx", table[["name", "start", "end", "gap", "fill"]])]
